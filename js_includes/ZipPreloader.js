@@ -33,7 +33,6 @@ $(document).ready(function() {
                     currentLength++;
                     if (currentLength >= totalLength) {
                       numberUnzippedFiles++;
-                      console.log(resourcesRepository);
                       if (numberUnzippedFiles == zipFiles.length)
                         __resourcesUnzipped__ = true;
                     }
