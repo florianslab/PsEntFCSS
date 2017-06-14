@@ -286,7 +286,9 @@ jqueryWidget: {
           }
             // Audio file
           else if (currentElement.hasOwnProperty("audio")) {
-              domelements[el] = $('<audio />', { controls : 'controls', preload : 'auto' });
+              var type = "audio/mpeg;";
+              if (currentElement.hasOwnProperty("type")) type = currentElement.type;
+              domelements[el] = $('<audio />', { controls : 'controls', preload : 'auto', type: type });
               domelements[el].append($(document.createElement("source")).attr("src",currentElement.audio)).attr("controls","");
               if (currentElement.show == "none") domelements[el].addClass("display", "none");
               var wait = function () { };
