@@ -291,7 +291,7 @@ jqueryWidget: {
               domelements[el] = $('<audio />', { controls : 'controls', preload : 'auto' });
               domelements[el].append($(document.createElement("source")).attr({"src": currentElement.audio,
                                                                                "controls": "",
-                                                                               "type": type});
+                                                                               "type": type}));
               if (currentElement.show == "none") domelements[el].addClass("display", "none");
               var wait = function () { };
               if (currentElement.hasOwnProperty("waitFor")) {
