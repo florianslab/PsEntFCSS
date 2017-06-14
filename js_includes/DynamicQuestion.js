@@ -288,8 +288,10 @@ jqueryWidget: {
           else if (currentElement.hasOwnProperty("audio")) {
               var type = "audio/mpeg;";
               if (currentElement.hasOwnProperty("type")) type = currentElement.type;
-              domelements[el] = $('<audio />', { controls : 'controls', preload : 'auto', type: type });
-              domelements[el].append($(document.createElement("source")).attr("src",currentElement.audio)).attr("controls","");
+              domelements[el] = $('<audio />', { controls : 'controls', preload : 'auto' });
+              domelements[el].append($(document.createElement("source")).attr({"src": currentElement.audio,
+                                                                               "controls": "",
+                                                                               "type": type});
               if (currentElement.show == "none") domelements[el].addClass("display", "none");
               var wait = function () { };
               if (currentElement.hasOwnProperty("waitFor")) {
