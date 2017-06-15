@@ -101,12 +101,12 @@ var items = [
                   {pause: 150},
                   //x.Context_Sentence,
                   {this: "answers", showKeys: "top"},
-                  {audio: x.context_sound_filename, waitFor:true, type: "audio/ogg;"},
+                  {audio: x.context_sound_filename, waitFor:true, type: "audio/mpeg"},
                   {pause: 150, newRT: true},
                   //x.Test_Sentence,
                   {audio: x.test_sound_filename, type: "audio/ogg;"},
                   function(t){ 
-                      $("#visiblehideWednesday, #coveredhideWednesday").css("display", "none");
+                      $("#visiblehideWednesday, #coveredhideWednesday").css("display", "mpeg");
                       t.enabled=true;
                   }
               ];}

@@ -286,7 +286,7 @@ jqueryWidget: {
           }
             // Audio file
           else if (currentElement.hasOwnProperty("audio")) {
-              var type = "audio/mpeg;";
+              var type = "audio/mpeg";
               if (currentElement.hasOwnProperty("type")) type = currentElement.type;
               domelements[el] = $('<audio />', { controls : 'controls', preload : 'auto' });
               domelements[el].append($(document.createElement("source")).attr({"src": currentElement.audio,
