@@ -2,9 +2,11 @@
 //
 // PRELOADER CONTROLLER
 //
-// last edit: 04-06-2016 by Jeremy
+// last edit: 06-15-2017 by Jeremy
 //
 // History of changes:
+//  - 06-15-2017:
+//      + Added 'type' to audio sources
 //  - 04-08-2016:
 //      + Modified 'answers' so that it accepts non-string values (jQuery Objects)
 //  - 04-06-2016:
@@ -172,7 +174,6 @@ jqueryWidget: {
             //for (el in next) {
             for (var el = next.length-1; el >= 0; --el) {
                 var child = t.element.children()[next[el]];
-                $(child).css("display", "");
                 if (child.nodeName == "AUDIO")
                     child.play();
                 else if (child.nodeName == "PAUSE") {
@@ -203,6 +204,8 @@ jqueryWidget: {
                 //    t.elements[next[el]].func(t);
                 else if (typeof t.elements[next[el]] == "function")
                     t.elements[next[el]](t);
+                else
+                    $(child).css("display", "");
                 if (t.autoScroll) {
                     window.scrollTo(0,document.body.scrollHeight);
               }
@@ -290,9 +293,8 @@ jqueryWidget: {
               if (currentElement.hasOwnProperty("type")) type = currentElement.type;
               domelements[el] = $('<audio />', { controls : 'controls', preload : 'auto' });
               domelements[el].append($(document.createElement("source")).attr({"src": currentElement.audio,
-                                                                               "controls": "",
                                                                                "type": type}));
-              if (currentElement.show == "none") domelements[el].addClass("display", "none");
+              if (currentElement.show == "none") domelements[el].css("display", "none");
               var wait = function () { };
               if (currentElement.hasOwnProperty("waitFor")) {
                   // Have to use this hack (IIFE) to make sure "elementsToShow" is interpreted right away

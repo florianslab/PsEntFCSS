@@ -104,9 +104,9 @@ var items = [
                   {audio: x.context_sound_filename, waitFor:true, type: "audio/mpeg"},
                   {pause: 150, newRT: true},
                   //x.Test_Sentence,
-                  {audio: x.test_sound_filename, type: "audio/ogg;"},
+                  {audio: x.test_sound_filename, type: "audio/mpeg"},
                   function(t){ 
-                      $("#visiblehideWednesday, #coveredhideWednesday").css("display", "mpeg");
+                      $("#visiblehideWednesday, #coveredhideWednesday").css("display", "none");
                       t.enabled=true;
                   }
               ];}
