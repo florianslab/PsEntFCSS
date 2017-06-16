@@ -21,14 +21,17 @@ var defaults = [
     }
 ];
 
-var contextSentencesURL = "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/NewContextSentences.zip";
-if (Parameters.Ctxt == "FCA")
-  contextSentencesURL = "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/OldContextSentences.zip";
+var contextFilename = "NewContextSentences.zip",
+    testsoundFilename = "NewTestSound.zip";
+if (Parameters.Ctxt == "FCA"){
+  contextFilename = "OldContextSentences.zip";
+  testsoundFilename = "OldTestSound.zip";
+}
 
-var zipFiles = {testsound: "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/TestSound.zip",
+var zipFiles = {testsound: "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/"+testsoundFilename,
                 images: "http://files.lab.florianschwarz.net/ibexfiles/ImagesPNG.zip", 
                 testsentences: "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/TestSentences.zip",
-                contextsentences: contextSentencesURL};
+                contextsentences: "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/"+contextFilename};
 
 var items = [
 
