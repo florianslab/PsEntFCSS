@@ -21,9 +21,14 @@ var defaults = [
     }
 ];
 
+var contextSentencesURL = "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/NewContextSentences.zip";
+if (Parameters.Ctxt == "FCA")
+  contextSentencesURL = "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/OldContextSentences.zip";
+
 var zipFiles = {testsound: "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/TestSound.zip",
                 images: "http://files.lab.florianschwarz.net/ibexfiles/ImagesPNG.zip", 
-                sounds: "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/Audio.zip"};
+                testsentences: "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/TestSentences.zip",
+                contextsentences: contextSentences};
 
 var items = [
 
