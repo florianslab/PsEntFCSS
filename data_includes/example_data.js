@@ -28,7 +28,7 @@ if (Parameters.Ctxt == "FCA")
 var zipFiles = {testsound: "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/TestSound.zip",
                 images: "http://files.lab.florianschwarz.net/ibexfiles/ImagesPNG.zip", 
                 testsentences: "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/TestSentences.zip",
-                contextsentences: contextSentences};
+                contextsentences: contextSentencesURL};
 
 var items = [
 
