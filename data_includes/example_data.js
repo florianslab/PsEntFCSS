@@ -21,8 +21,9 @@ var defaults = [
     }
 ];
 
-var zipFiles = ["http://files.lab.florianschwarz.net/ibexfiles/ImagesPNG.zip", 
-                "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/Audio.zip"];
+var zipFiles = {testsound: "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/TestSound.zip",
+                images: "http://files.lab.florianschwarz.net/ibexfiles/ImagesPNG.zip", 
+                sounds: "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/Audio.zip"};
 
 var items = [
 
@@ -30,8 +31,10 @@ var items = [
     
     ["Instructions", "Form", {html: {include: "ProlificConsentForm.html"}, continueOnReturn: true}],
 
+    ["Instructions", "ZipPreloader", {only: ["testsound"]}],
+
     ["Instructions", "Message", {html: {include: "warning.html"}}],
-    
+
     ["Instructions", "Message", {html: {include: "instructions.html"}}],
 
     ["Instructions", "ZipPreloader", {}],

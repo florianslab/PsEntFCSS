@@ -1,41 +1,40 @@
 // List of changes
+//  06-16-2017
+//    - zipFiles is now an object of named URLs
+//    - Added the optional parameter 'only,' specifying which zip files should be checked for
 //  06-14-2017
 //    - Added support of multiple zip files
 //    - Added better support for images
 //    - Added MutationObserver for browsers that support it
 
-var __resourcesUnzipped__ = false;
+var __resourcesUnzipped__ = [];
 
 $(document).ready(function() {
+
+    if (typeof zipFiles == "undefined") return;
 
     // This object will contain the list of audio files to preload
     var resourcesRepository = {};
     var numberUnzippedFiles = 0;
 
-    var getZipFile = function(zipfilename){
+    var getZipFile = function(name, url){
       var zip = new JSZip();
-      var errors = "";
-    
-      JSZipUtils.getBinaryContent(zipfilename, function(error, data) {
-        if(error) {
-            errors += error;
-            throw error;
-        }
+      
+      JSZipUtils.getBinaryContent(url, function(error, data) {
+        if(error) throw error;
         // Loading the zip object with the data stream
         zip.loadAsync(data).then(function() {
-          console.log("Download of "+zipfilename+" complete");
-            var totalLength = Object.keys(zip.files).length;
+            console.log("Download of "+name+" ("+url+") complete");
             var currentLength = 0;
             // Going through each zip file
             zip.forEach(function(path, file){
                 // Unzipping the file, and counting how far we got
                 file.async('arraybuffer').then(function(content){
+                    // Incrementing now, because 'return' if the file's type doesn't match
                     currentLength++;
-                    if (currentLength >= totalLength) {
-                      numberUnzippedFiles++;
-                      if (numberUnzippedFiles == zipFiles.length)
-                        __resourcesUnzipped__ = true;
-                    }
+                    // If all the files have been unzipped
+                    if (currentLength >= Object.keys(zip.files).length)
+                      __resourcesUnzipped__.push(name);
                     var blob;
                     if (path.match(/\.wav$/)) 
                       blob = new Blob([content], {'type': 'audio/wav'});
@@ -51,18 +50,18 @@ $(document).ready(function() {
                       blob = new Blob([content], {'type': 'image/gif'});
                     else return;
                     var src = URL.createObjectURL(blob);
-                    resourcesRepository[path] = src;    
+                    resourcesRepository[path] = src;
                 });
             });
         });
       });
     };
     
-    assert(Array.isArray(zipFiles), "zipFiles should be an array of URLs");
-    $.each(zipFiles, function(i, zipFile) {
-        assert(typeof zipFile == "string", "zipFiles variable is either undefined or ill-defined ("+typeof zipFiles+")");
-        assert(zipFile.match(/^https?:\/\/.+\.zip$/) != null, "Bad format for the URL provided as zipFiles ("+zipFile+")");
-        getZipFile(zipFile);
+    assert(typeof zipFiles == "object", "zipFiles should be an object of URLs");
+    $.each(zipFiles, function(name, url) {
+        assert(typeof url == "string", "Wrong type for the "+name+" entry of zipFiles ("+typeof url+", should be string)");
+        assert(url.match(/^https?:\/\/.+\.zip$/) != null, "Bad format for the URL provided in zipFiles as "+name);
+        getZipFile(name, url);
     });
 
 
@@ -179,6 +178,8 @@ define_ibex_controller({
   jqueryWidget: {    
     _init: function () {
 
+        assert(typeof zipFiles != "undefined", "The variable zipFiles is not defined");
+
         var humanTime = function(milliseconds) {
           var date = new Date(milliseconds);
           var str = '';
@@ -195,6 +196,10 @@ define_ibex_controller({
         this.cssPrefix = this.options._cssPrefix;
         this.utils = this.options._utils;
         this.finishedCallback = this.options._finishedCallback;
+
+        this.only = dget(this.options, "only", Object.keys(zipFiles))
+        assert(Array.isArray(this.only), "The parameter 'only' for ZipPreloader should be an array of names"+
+                                         " (currently of type "+typeof this.only+")");
         
         // How long do we have to wait before giving up loading?
         this.timeout = dget(this.options, "timeout", 60000);
@@ -220,14 +225,24 @@ define_ibex_controller({
         
         // Launching the interval to check for all files being loaded
         t.checkLoaded = setInterval(function() {
-            if (__resourcesUnzipped__) {
-                // If all files have been loaded, stop the interval
-                clearInterval(t.checkLoaded);
-                // If there was a timeout, also clear it
-                if (typeof t.timeout == "number") clearTimeout(t.timer);
-                // Pass to the next element in the thread
-                t.finishedCallback(null);
-            }}, 10);
+          // Checking the files in 'only'
+          for (fileToLoad in t.only){
+            var isFileLoaded = false;
+            // Going through the unzipped files
+            for (unzippedFile in __resourcesUnzipped__) {
+              // If the current file in 'only' is already unzipped, indicate it
+              if (t.only[fileToLoad] == __resourcesUnzipped__[unzippedFile]) isFileLoaded = true;
+            }
+            // If the current file in 'only' is not loaded/unzipped yet, abort
+            if (!isFileLoaded) return;
+          }
+          // All files have been loaded, stop the interval
+          clearInterval(t.checkLoaded);
+          // If there was a timeout, also clear it
+          if (typeof t.timeout == "number") clearTimeout(t.timer);
+          // Pass to the next element in the thread
+          t.finishedCallback(null);
+        }, 10);
         
         // If a timeout has been passed
         if (typeof t.timeout == "number")
@@ -235,8 +250,7 @@ define_ibex_controller({
           t.timer = setTimeout(function () {
                 // We won't try to load anymore
                 clearInterval(t.checkLoaded);
-                $("#content").html("<div id='errorSorryMessage'>"+t.errorMessage+"</div>"+
-                                   "<div id='errorMessages'>"+errors+"</div>");
+                $("#content").html("<div id='errorSorryMessage'>"+t.errorMessage+"</div>");
             }, t.timeout);
     }
   },
