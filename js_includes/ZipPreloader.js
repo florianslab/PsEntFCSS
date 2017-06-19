@@ -51,6 +51,7 @@ $(document).ready(function() {
                     else return;
                     var src = URL.createObjectURL(blob);
                     resourcesRepository[path] = src;
+                    console.log("Unzipped file "+src);
                 });
             });
         });
