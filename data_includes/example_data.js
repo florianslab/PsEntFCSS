@@ -28,6 +28,9 @@ if (Parameters.Ctxt == "FCA"){
   testsoundFilename = "OldTestSound.zip";
 }
 
+var data = dataReturn;
+if (Parameters.Trig == "St") data = dataStop;
+
 var zipFiles = {testsound: "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/"+testsoundFilename,
                 images: "http://files.lab.florianschwarz.net/ibexfiles/ImagesPNG.zip", 
                 testsentences: "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/TestSentences.zip",
@@ -64,7 +67,7 @@ var items = [
         html: {include: "ProlificConfirmation.html"}
     }]
 
-    ].concat(GetItemsFrom(dataReturn, null, {
+    ].concat(GetItemsFrom(data, null, {
       ItemGroup: ["item", "group"],
       Elements: [
           function(x){return x.Expt+x.Condition;},          // Name of the item: 'Condition' column
