@@ -30,6 +30,7 @@ if (Parameters.Ctxt == "FCA"){
 
 var data = dataReturn;
 if (Parameters.Trig == "St") data = dataStop;
+if (Parameters.Trig == "Cont") data = dataContinue;
 
 var zipFiles = {testsound: "http://files.lab.florianschwarz.net/ibexfiles/PsEntFCSS/"+testsoundFilename,
                 images: "http://files.lab.florianschwarz.net/ibexfiles/ImagesPNG.zip", 
